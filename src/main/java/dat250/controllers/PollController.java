@@ -33,8 +33,8 @@ public class PollController {
 
     @PostMapping("")
     public ResponseEntity<Poll> createPoll(@RequestBody Poll poll) {
-        pollManager.createPoll(poll);
-        return ResponseEntity.ok(poll);
+        Poll created = pollManager.createPoll(poll); //manager should assign ID so we dont risk collisions?
+        return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}")

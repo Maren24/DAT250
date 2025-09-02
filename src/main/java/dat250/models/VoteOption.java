@@ -11,6 +11,12 @@ public class VoteOption {
     public VoteOption() {
     }
 
+    public VoteOption(String optionId, String caption, String pollId) {
+        this.optionId = optionId;
+        this.caption = caption;
+        this.pollId = pollId;
+    }
+
     // OptionId
     public String getOptionId()   {
         return optionId;

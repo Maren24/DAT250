@@ -6,6 +6,7 @@ import dat250.models.Vote;
 import dat250.models.VoteOption;
 import org.springframework.stereotype.Component;
 
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -18,6 +19,9 @@ public class PollManager {
     private final Map<String, Poll> polls = new HashMap<>();
     private final Map<String, Vote> votes = new HashMap<>();
     private final Map<String, VoteOption> voteOptions = new HashMap<>();
+    private int pollCounter = 1;
+    private int voteCounter = 1;
+    private int voteOptionCounter = 1;
 
     // User CRUD
     public User createUser(User user) {
@@ -52,7 +56,9 @@ public class PollManager {
 
     // Poll CRUD
     public Poll createPoll(Poll poll) {
-        polls.put(poll.getPollId(), poll);
+        String id = String.valueOf(pollCounter++);
+        poll.setPollId(id);
+        polls.put(id, poll);
         return poll;
     }
     public Poll getPoll(String pollId) {
@@ -105,11 +111,18 @@ public class PollManager {
     }
     public void deletePoll(String pollId) {
         polls.remove(pollId);
+        voteOptions.values().removeIf(opt -> pollId.equals(opt.getPollId()));
+        votes.values().removeIf(vote -> {
+            VoteOption opt = voteOptions.get(vote.getVoteOptionId());
+            return opt != null && pollId.equals(opt.getPollId());
+        });
     }
 
     // VoteOption CRUD
     public VoteOption createVoteOption(VoteOption option) {
-        voteOptions.put(option.getOptionId(), option);
+        String id = String.valueOf(voteOptionCounter++);
+        option.setOptionId(id);
+        voteOptions.put(id, option);
         return option;
     }
     public VoteOption getVoteOption(String optionId) {
@@ -150,7 +163,9 @@ public class PollManager {
 
     // Vote CRUD
     public Vote createVote(Vote vote) {
-        votes.put(vote.getVoteId(), vote);
+        String id = String.valueOf(voteCounter++);
+        vote.setVoteId(id);
+        votes.put(id, vote);
         return vote;
     }
     public Vote getVote(String voteId) {

@@ -9,7 +9,13 @@ public class Vote {
     private String voteOptionId;
     private Instant publishedAt;
 
-    public Vote()   {
+    public Vote() {
+    }
+
+    public Vote(User user, String voteOptionId) {
+        this.user = user;
+        this.voteOptionId = voteOptionId;
+        this.publishedAt = Instant.now();
     }
 
     // VoteId

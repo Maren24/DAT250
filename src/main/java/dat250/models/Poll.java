@@ -13,10 +13,18 @@ public class Poll {
     private Boolean publicAccess;
 
     private User createdBy;
-
     private List<VoteOption> options;
-
     public Poll() {
+    }
+
+    public Poll(String pollId, String question, Instant validUntil, Boolean publicAccess, User createdBy, List<VoteOption> options){
+        this.pollId = pollId;
+        this.question = question;
+        this.publishedAt = Instant.now();
+        this.validUntil = validUntil;
+        this.publicAccess = publicAccess;
+        this.createdBy = createdBy;
+        this.options = options;
     }
 
     // PollId
