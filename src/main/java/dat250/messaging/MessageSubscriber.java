@@ -42,6 +42,8 @@ public class MessageSubscriber {
                 String message = new String(delivery.getBody(), "UTF-8");
                 System.out.println(" [x] Received '" +
                         delivery.getEnvelope().getRoutingKey() + "':'" + message + "'");
+
+                // Store everything to database - not existing in this approach
             };
 
             channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> { });

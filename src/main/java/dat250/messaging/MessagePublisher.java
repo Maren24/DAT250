@@ -24,21 +24,18 @@ public class MessagePublisher {
     public void createChannel(String poll_id) throws Exception {
         try (Connection connection = factory.newConnection();
              Channel channel = connection.createChannel()) {
-            // String QueueName = QUEUE_NAME + "-" + poll_id;
-            String QueueName = QUEUE_NAME;
-            String ExchangeName = EXCHANGE_NAME;
 
             // Specifiy exchange on using topics
-            channel.exchangeDeclare(ExchangeName, "topic");
+            channel.exchangeDeclare(EXCHANGE_NAME, "topic");
 
             // Create a new queue
-            channel.queueDeclare(QueueName, false, false, false, null);
+            channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
             // Bind queue and exchange
-            channel.queueBind(QueueName, EXCHANGE_NAME, "poll/" + poll_id);
+            channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, "poll/" + poll_id);
 
             // channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
-            // System.out.println(" [x] Sent '" + message + "'");
+            System.out.println(" [x] New Channel registered with topic poll/" + poll_id);
         }
     }
 
