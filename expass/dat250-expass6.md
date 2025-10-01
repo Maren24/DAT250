@@ -2,7 +2,7 @@
 
 *Student*: Maren Franke
 
-*Code*: 
+*Code*: https://github.com/Maren24/DAT250/tree/expass6/src/main/java/dat250/messaging
 
 
 ## Using Rabbit MQ
