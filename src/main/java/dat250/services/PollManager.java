@@ -1,5 +1,6 @@
 package dat250.services;
 
+import dat250.messaging.MessagePublisher;
 import dat250.models.Poll;
 import dat250.models.User;
 import dat250.models.UserRequests.UserGetResponse;
@@ -21,6 +22,12 @@ public class PollManager {
     private final Map<String, Poll> polls = new HashMap<>();
     private final Map<String, Vote> votes = new HashMap<>();
     private final Map<String, VoteOption> voteOptions = new HashMap<>();
+
+    MessagePublisher publisher;
+
+    public PollManager(MessagePublisher publisher) {
+        this.publisher = publisher;
+    }
 
     /**
      * User CRUD
@@ -119,7 +126,12 @@ public class PollManager {
             option.setPollId(poll.getPollId());
             this.createVoteOption(option);
         }
-        
+
+        try {
+            publisher.createChannel(poll.getPollId());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         polls.put(poll.getPollId(), poll);
         return poll;
     }
@@ -175,7 +187,7 @@ public class PollManager {
             option.setOptionId(UUID.randomUUID().toString());
         }
         option.setVotes(null);
-        
+
         voteOptions.put(option.getOptionId(), option);
         return option;
     }
@@ -243,6 +255,12 @@ public class PollManager {
             }
         }
 
+        try {
+            VoteOption option = voteOptions.get(vote.getVoteOptionId());
+            publisher.sendMessage(vote, option.getPollId());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         votes.put(vote.getVoteId(), vote);
         return vote;
     }
